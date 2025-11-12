@@ -4,16 +4,16 @@ module "sample_Team_Catalog" {
 
   display_name = "sample Team Catalog"
   description  = "Catalog for IT department resources"
-  group_names  = ["TestLicGroup1", "TestLicGroup2", "TestLicGroup3"]
-  domain       = "wfscorpdev.com"
+  group_names  = ["Group1", "Group2", "Group3"]
+  domain       = "yourdomain.com"
   # Assign a user and a group as Catalog Owners
   catalog_owners = [
     {
-      identifier = "saravichandran"
+      identifier = "username"
       type       = "user"
     },
     {
-      identifier = "TestLicGroup1" # The display name of the group
+      identifier = "Group1" # The display name of the group
       type       = "group"
     }
   ]
@@ -21,18 +21,18 @@ module "sample_Team_Catalog" {
   # Assign a specific user as a Catalog Creator
   catalog_creators = [
     {
-      identifier = "saravichandran"
+      identifier = "username"
       type       = "user"
     }
   ]
 
   access_package_managers = [
     {
-      identifier = "saravichandran"
+      identifier = "username"
       type       = "user"
     },
     {
-      identifier = "TestLicGroup1" # The display name of the group
+      identifier = "Group1" # The display name of the group
       type       = "group"
     }
   ]
@@ -45,7 +45,7 @@ module "sample_Admin_Accesspackage" {
   package_name      = "sample Admin"
   description       = "Access package for sample Admin"
   catalog_id        = module.sample_Team_Catalog.catalog_id
-  group_names       = ["TestLicGroup1", "TestLicGroup2", "TestLicGroup3"]
+  group_names       = ["Group1", "Group2", "Group3"]
   catalog_resources = module.sample_Team_Catalog.catalog_resources
 }
 
@@ -54,7 +54,7 @@ module "sample_Readonly_Accesspackage" {
   package_name      = "sample Readonly Admin"
   description       = "Access package for sample Readonly Admin"
   catalog_id        = module.sample_Team_Catalog.catalog_id
-  group_names       = ["TestLicGroup1", "TestLicGroup2"]
+  group_names       = ["Group1", "Group2"]
   catalog_resources = module.sample_Team_Catalog.catalog_resources
 }
 
@@ -75,7 +75,7 @@ module "sample_Readonly_Accesspackage_policy" {
   access_package_id = module.sample_Readonly_Accesspackage.access_package_id
   display_name      = "Default Policy"
   description       = "Default Policy"
-  domain            = "wfscorpdev.com"
+  domain            = "yourdomain.com"
   approval_required = false
   approval_stages = [
     # STAGE 1: The user's manager must approve first.
@@ -90,7 +90,8 @@ module "sample_Readonly_Accesspackage_policy" {
         },
         # Backup approver is a specific user
         {
-          user_principal_name = "saravichandran"
+          user_principal_name = "username
+  "
           subject_type        = "singleUser"
           backup              = true
         }
@@ -104,7 +105,7 @@ module "sample_Readonly_Accesspackage_policy" {
       primary_approvers = [
         {
           # For a group, provide the display name and set subject_type
-          group_display_name = "TestLicgroup2"
+          group_display_name = "group2"
           subject_type       = "groupMembers"
         }
       ]
@@ -117,7 +118,8 @@ module "sample_Readonly_Accesspackage_policy" {
       primary_approvers = [
         {
           # For a user, provide the UPN and set subject_type
-          user_principal_name = "saravichandran"
+          user_principal_name = "username
+  "
           subject_type        = "singleUser"
         }
       ]
@@ -132,7 +134,7 @@ module "sample_Readonly_Accesspackage_policy" {
   review_type = "Reviewers"
   reviewers = [
     {
-      group_display_name = "TestLicGroup3"
+      group_display_name = "Group3"
       subject_type       = "groupMembers"
     }
   ]
@@ -145,7 +147,7 @@ module "sample_Admin_Accesspackage_policy" {
   display_name      = "Default Policy"
   description       = "Default Policy"
   duration_in_days  = 30
-  domain            = "wfscorpdev.com"
+  domain            = "yourdomain.com"
   approval_required = true
   approval_stages = [
     # STAGE 1: The user's manager must approve first.
@@ -160,7 +162,8 @@ module "sample_Admin_Accesspackage_policy" {
         },
         # Backup approver is a specific user
         {
-          user_principal_name = "saravichandran"
+          user_principal_name = "username
+  "
           subject_type        = "singleUser"
           backup              = true
         }
@@ -174,7 +177,7 @@ module "sample_Admin_Accesspackage_policy" {
       primary_approvers = [
         {
           # For a group, provide the display name and set subject_type
-          group_display_name = "TestLicgroup2"
+          group_display_name = "group2"
           subject_type       = "groupMembers"
         }
       ]
@@ -187,7 +190,8 @@ module "sample_Admin_Accesspackage_policy" {
       primary_approvers = [
         {
           # For a user, provide the UPN and set subject_type
-          user_principal_name = "saravichandran"
+          user_principal_name = "username
+  "
           subject_type        = "singleUser"
         }
       ]
@@ -202,7 +206,7 @@ module "sample_Admin_Accesspackage_policy" {
   review_type = "Reviewers"
   reviewers = [
     {
-      group_display_name = "TestLicGroup3"
+      group_display_name = "Group3"
       subject_type       = "groupMembers"
     }
   ]
