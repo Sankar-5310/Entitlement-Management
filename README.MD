@@ -19,15 +19,15 @@ Defines a catalog for organizing access packages.
 
 #### Example:
 ```hcl
-module "Infosec_Team_Catalog" {
+module "Sample_Team_Catalog" {
   source = "../modules/catalogue"
-  display_name = "Infosec Team Catalog"
+  display_name = "Sample Team Catalog"
   description  = "Catalog for IT department resources"
-  group_names  = ["TestLicGroup1", "TestLicGroup2", "TestLicGroup3"]
-  domain       = "wfscorpdev.com"
-  catalog_owners = [{ identifier = "saravichandran", type = "user" }, { identifier = "TestLicGroup1", type = "group" }]
-  catalog_creators = [{ identifier = "saravichandran", type = "user" }]
-  access_package_managers = [{ identifier = "saravichandran", type = "user" }, { identifier = "TestLicGroup1", type = "group" }]
+  group_names  = ["Group1", "Group2", "Group3"]
+  domain       = "yourdomain.com"
+  catalog_owners = [{ identifier = "userupn", type = "user" }, { identifier = "Group1", type = "group" }]
+  catalog_creators = [{ identifier = "userupn", type = "user" }]
+  access_package_managers = [{ identifier = "userupn", type = "user" }, { identifier = "Group1", type = "group" }]
 }
 ```
 
@@ -43,13 +43,13 @@ Creates access packages within a catalog.
 
 #### Example:
 ```hcl
-module "Infosec_Admin_Accesspackage" {
+module "Sample_Admin_Accesspackage" {
   source = "../modules/access_package"
-  package_name = "Infosec Admin"
-  description  = "Access package for Infosec Admin"
-  catalog_id   = module.Infosec_Team_Catalog.catalog_id
-  group_names  = ["TestLicGroup1", "TestLicGroup2", "TestLicGroup3"]
-  catalog_resources = module.Infosec_Team_Catalog.catalog_resources
+  package_name = "Sample Admin"
+  description  = "Access package for Sample Admin"
+  catalog_id   = module.Sample_Team_Catalog.catalog_id
+  group_names  = ["Group1", "Group2", "Group3"]
+  catalog_resources = module.Sample_Team_Catalog.catalog_resources
 }
 ```
 
@@ -68,7 +68,7 @@ Automatically assigns access packages based on user attributes.
 ```hcl
 module "sales_auto_assignment_policy" {
   source = "../modules/AutoAssignmentPolicy"
-  access_package_id = module.Infosec_Admin_Accesspackage.access_package_id
+  access_package_id = module.Sample_Admin_Accesspackage.access_package_id
   display_name = "Automated Assignment Policy"
   description  = "Automatically assign Sales Team Access to all users from the IT department."
   membership_rule = "(user.department -eq "ne")"
@@ -96,27 +96,27 @@ Defines approval and review policies for access packages.
 
 #### Example:
 ```hcl
-module "Infosec_Admin_Accesspackage_policy" {
+module "Sample_Admin_Accesspackage_policy" {
   source = "../modules/policy"
-  access_package_id = module.Infosec_Admin_Accesspackage.access_package_id
+  access_package_id = module.Sample_Admin_Accesspackage.access_package_id
   display_name = "Default Policy"
   description  = "Default Policy"
   duration_in_days = 30
-  domain = "wfscorpdev.com"
+  domain = "yourdomain.com"
   approval_required = true
   approval_stages = [
     { timeout_in_days = 7, justification_required = false, enable_alternative_approver = false,
-      primary_approvers = [ { subject_type = "requestorManager" }, { user_principal_name = "saravichandran", subject_type = "singleUser", backup = true } ] },
+      primary_approvers = [ { subject_type = "requestorManager" }, { user_principal_name = "userupn", subject_type = "singleUser", backup = true } ] },
     { timeout_in_days = 7, justification_required = true, enable_alternative_approver = false,
-      primary_approvers = [ { group_display_name = "TestLicgroup2", subject_type = "groupMembers" } ] },
+      primary_approvers = [ { group_display_name = "group2", subject_type = "groupMembers" } ] },
     { timeout_in_days = 7, justification_required = true, enable_alternative_approver = false,
-      primary_approvers = [ { user_principal_name = "saravichandran", subject_type = "singleUser" } ] }
+      primary_approvers = [ { user_principal_name = "userupn", subject_type = "singleUser" } ] }
   ]
   assignment_review_enabled = true
   review_frequency = "quarterly"
   review_duration_in_days = 14
   review_type = "Reviewers"
-  reviewers = [ { group_display_name = "TestLicGroup3", subject_type = "groupMembers" } ]
+  reviewers = [ { group_display_name = "Group3", subject_type = "groupMembers" } ]
 }
 ```
 
